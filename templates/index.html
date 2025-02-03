@@ -7,45 +7,100 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 20px;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+            color: #333;
         }
         .container {
             display: flex;
             flex-direction: column;
             align-items: center;
+            padding: 20px;
         }
         .count-display {
             font-size: 24px;
             font-weight: bold;
             margin-bottom: 20px;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 15px 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
         .tool-change-button {
             margin-top: 20px;
             padding: 10px 20px;
             font-size: 16px;
             cursor: pointer;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            transition: background 0.3s ease;
+        }
+        .tool-change-button:hover {
+            background: #0056b3;
         }
         .diversity-select {
             margin-top: 20px;
             padding: 10px;
             font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            background: white;
         }
         table {
             margin-top: 20px;
             border-collapse: collapse;
             width: 80%;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
         th, td {
-            border: 1px solid black;
-            padding: 8px;
+            border: 1px solid #ddd;
+            padding: 12px;
             text-align: center;
         }
         th {
-            background-color: #f2f2f2;
+            background-color: #007bff;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        /* Animation for the count display */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        .count-display {
+            animation: pulse 2s infinite;
+        }
+
+        /* Background image with overlay */
+        .background-image {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background-image: url('https://source.unsplash.com/1600x900/?technology,industry');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.6;
         }
     </style>
 </head>
 <body>
+    <div class="background-image"></div>
     <div class="container">
         <div class="count-display">
             Diversity <span id="selected_diversity">{{ selected_diversity if selected_diversity else 'Not Selected' }}</span> 
@@ -96,4 +151,4 @@
         setInterval(updateDiversityCount, 1000);
     </script>
 </body>
-</html>
+</html>        
