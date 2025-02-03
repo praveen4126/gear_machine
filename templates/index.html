@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diversity Count & Tool Change Log</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .count-display {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        .tool-change-button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .diversity-select {
+            margin-top: 20px;
+            padding: 10px;
+            font-size: 16px;
+        }
+        table {
+            margin-top: 20px;
+            border-collapse: collapse;
+            width: 80%;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="count-display">
+            Diversity <span id="selected_diversity">{{ selected_diversity if selected_diversity else 'Not Selected' }}</span> 
+        </div>
+        <form method="POST">
+            <button type="submit" class="tool-change-button" name="tool_change">Tool Change (Reset)</button>
+        </form>
+        
+        <form method="POST">
+            <select class="diversity-select" name="diversity_select" onchange="this.form.submit()">
+                <option value="">Select Diversity</option>
+                <option value="1" {% if selected_diversity == 1 %}selected{% endif %}>Diversity 1</option>
+                <option value="2" {% if selected_diversity == 2 %}selected{% endif %}>Diversity 2</option>
+                <option value="3" {% if selected_diversity == 3 %}selected{% endif %}>Diversity 3</option>
+                <option value="4" {% if selected_diversity == 4 %}selected{% endif %}>Diversity 4</option>
+            </select>
+        </form>
+
+        <!-- Table to display log data -->
+        <h2>Tool Change Log</h2>
+        <table>
+            <tr>
+                <th>Timestamp</th>
+                <th>Diversity No</th>
+                <th>Diversity Count</th>
+            </tr>
+            {% for entry in log_entries %}
+            <tr>
+                <td>{{ entry[0] }}</td>
+                <td>{{ entry[1] }}</td>
+                <td>{{ entry[2] }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+    <script>
+        function updateDiversityCount() {
+            fetch('/get_diversity_count')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById("selected_diversity").textContent = data.diversity_count;
+                })
+                .catch(error => console.error("Error fetching diversity count:", error));
+        }
+
+        // Refresh counts every 1 second
+        setInterval(updateDiversityCount, 1000);
+    </script>
+</body>
+</html>
